@@ -18,10 +18,6 @@ app.get('/admin',function(req,res)
 {
     res.render('adminPage');
 });
-app.get('/',function(req,res)
-{
-    res.render('index');
-});
 
 
 app.post('/action', function(req,res)
@@ -38,14 +34,14 @@ app.post('/action', function(req,res)
             var data = record._fields[0].properties;
             if(data.passwors == pass)
             {
-                res.render('adminLog');
+                res.render('adminEnter');
                 console.log('correct');
             }
             else{
                 console.log('incorrect');
             }
         });
-        
+       
     })
    
     .catch(function(err)
@@ -54,6 +50,35 @@ app.post('/action', function(req,res)
     });
 
 });
+
+app.post('/view',function(req,res)
+{
+    session
+    .run('MATCH(n:school) RETURN n')
+    .then(function(result)
+    {
+        var schoolArr = [];
+        result.records.forEach(function(record)
+        {
+            console.log(record._fields[0].properties.name);
+            schoolArr.push({
+                name:record._fields[0].properties.name
+                
+            });
+
+        });
+        res.render('adminLog',{
+           arr:schoolArr 
+        })
+    })
+    .catch(function(err)
+    {
+        console.log(err);
+    })
+    //res.render('adminLog');
+})
+
+
 
 app.listen(3000);
 console.log('server port number 3000');

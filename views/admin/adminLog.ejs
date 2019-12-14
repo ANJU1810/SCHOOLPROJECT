@@ -1,3 +1,20 @@
 <center>
-    <h1>WELCOME</h1>
+    <h2>WELCOME</h2>
+   
+    <select name="name">
+        <% arr.forEach(function(school){ %>
+            <option>
+                <%= school.name %>
+           <% }) %>
+            </option>
+
+        
+        
+    </select>
+    <form action="/approve" method="POST">
+        <input type="submit" value="Approve">
+    </form>
+    <form action="/reject" method="POST">
+        <input type="submit" value="Reject">
+    </form>
 </center>
