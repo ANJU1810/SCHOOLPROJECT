@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/ANJU1810/SCHOOLPROJECT/issues"
   },
-  "homepage": "https://github.com/ANJU1810/SCHOOLPROJECT#readme"
+  "homepage": "https://github.com/ANJU1810/SCHOOLPROJECT#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "neo4j-driver": "^4.0.0",
+    "path": "^0.12.7"
+  }
 }

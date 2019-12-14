@@ -1,0 +1,14 @@
+﻿[
+  {
+    "n": {
+      "identity": 0,
+      "labels": [
+        "admin"
+      ],
+      "properties": {
+        "name": "admin",
+        "passwors": "admin123"
+      }
+    }
+  }
+]
