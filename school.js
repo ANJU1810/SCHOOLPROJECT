@@ -5,7 +5,7 @@ var bodyParser=require('body-parser');
 var neo4j=require('neo4j-driver');
 
 var app=express();
-app.set('views',path.join(__dirname,'views'));
+app.set('views',path.join(__dirname,'views/school'));
 app.set('view engine','ejs');
 
 app.use(logger('dev'));
@@ -20,13 +20,13 @@ var session=driver.session();
 //Registration
 app.get('/school-reg',function(req,res){
     
-    res.render('school/schoolReg');
+    res.render('schoolReg');
  });
 
  //school login
  app.get('/',function(req,res){
     
-    res.render('school/schoolLog');
+    res.render('schoolLog');
  });
 
  //post for reg
@@ -56,12 +56,12 @@ app.get('/school-reg',function(req,res){
     if(check==1)
     {
         console.log('Already registered');
-        res.render('school/schoolLog');
+        res.render('schoolLog');
       
     }
     else{
         console.log('Successfully Registered');
-        res.render('school/schoolLog');
+        res.render('schoolLog');
     }
     
        session.close();
