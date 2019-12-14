@@ -20,13 +20,13 @@ var session=driver.session();
 //Registration
 app.get('/school-reg',function(req,res){
     
-    res.render('schoolReg');
+    res.render('school/schoolReg');
  });
 
  //school login
  app.get('/',function(req,res){
     
-    res.render('schoolLog');
+    res.render('school/schoolLog');
  });
 
  //post for reg
@@ -56,12 +56,12 @@ app.get('/school-reg',function(req,res){
     if(check==1)
     {
         console.log('Already registered');
-        res.render('schoolLog');
+        res.render('school/schoolLog');
       
     }
     else{
         console.log('Successfully Registered');
-        res.render('schoolLog');
+        res.render('school/schoolLog');
     }
     
        session.close();
