@@ -5,7 +5,7 @@ var path = require('path');
 var neo4j = require('neo4j-driver');
 
 var app = express();
-app.set('views',path.join(__dirname,'views'));
+app.set('views',path.join(__dirname,'views/admin'));
 app.set('view engine', 'ejs');
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:false}));
@@ -55,49 +55,6 @@ app.post('/action', function(req,res)
 
 });
 
-
-/*app.post('/action',function(req,res)
-{
-    var Name = req.body.name;
-    var Email = req.body.email;
-    var Pass = req.body.pass;
-    
-   // console.log(Name);
-    session
-    .run('CREATE (n:user {name:{nameParam},email:{emailParam},pass:{passParam}})', {nameParam:Name ,emailParam:Email ,passParam:Pass})
-    .then(function(result)
-    {
-        var dup;
-        result.records.forEach(function(test)
-        {
-            var read = test._fields[0].properties;
-            if(read.email == Email)
-            {
-                dup = 1;
-            }
-          
-        })
-        if(dup ==1)
-        {
-            console.log('already');
-            res.send('Already Registered');
-           // res.redirect('/');
-        }
-        else{
-            res.redirect('/');
-            console.log('not');
-        }
-       
-        //session.close();
-    })
-   
-    .catch(function(err)
-    {
-        console.log(err);
-    })
-   // res.redirect('/');
-})
-*/
 app.listen(3000);
 console.log('server port number 3000');
 module.exports = app;
