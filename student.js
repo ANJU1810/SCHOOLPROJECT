@@ -1,4 +1,4 @@
-    var  express = require('express');
+     var  express = require('express');
     var  path = require('path');
     var  logger = require('morgan');
     var  bodyParser = require('body-parser');
@@ -14,7 +14,7 @@
     var session=driver.session();
 
 
-    app.get('/',function(req,res){
+     app.get('/',function(req,res){
         res.render('index');
 
        });
@@ -23,118 +23,87 @@
         var  sex=req.body.sex;
         var password=req.body.password;
 
-        var emailid=req.body.emailid;
+       var emailid=req.body.emailid;
         
         var address=req.body.address;
+        var status=req.body.status;
          session
-        .run('CREATE(n:Register {name:{nameParam}  ,sex:{sexParam} ,password:{passwordParam} ,emailid:{emailid},address:{addressParam} }) RETURN n' ,{nameParam:name ,passwordParam:password,emailid:emailid,sexParam:sex,addressParam:address})
+         .run('CREATE(n:Register {name:{nameParam}  ,sex:{sexParam} ,password:{passwordParam} ,emailid:{emailidParam},address:{addressParam},status:"0" }) RETURN n' ,{nameParam:name ,passwordParam:password,emailidParam:emailid,sexParam:sex,addressParam:address,statusParam:status})
 
-        .then(function(result){
-         res.redirect('/');
-            //session.close();
-        })  
-        .catch(function(err){
-            console.log(err);
-
-
-        })
-    });
-
-          app.get('/studlog',function(req,res){
-            res.render('studentlog');
-           });
-
-            app.post('/studlog',function(req,res){
-            var name=req.body.name;
-            var password=req.body.password;
-            session
-            .run('MATCH(n:Register{name:{nameParam}})RETURN n',{nameParam:name})
-            .then(function(result){
-                result.records.forEach(function(rec){
-
-                    console.log(rec._fields[0].properties);
-
-                    var a=rec._fields[0].properties;
-
-                    if(a.password==password){
-
-                        console.log("correct")
-
-                       //res.render('adminview');
-                    }
-                    else{
-                        console.log("failed")
-                    res.end("failed ")
-                }
-             })
-             })
-            .catch(function(err)
-            {
-                console.log(err);
-            })
+         .then(function(result){
+          res.redirect('/');
+             //session.close();
+         })  
+         .catch(function(err){
+             console.log(err);
+ 
+ 
+         })
         });
-
-
-        /* app.get('/stdregadminview',function(req,res){
-            res.render('adminview');
+ 
+           app.get('/studlog',function(req,res){
+             res.render('studentlog');
             });
+ 
+             app.post('/studlog',function(req,res){
+             var emailid=req.body.emailid;
+            // var password=req.body.password;
+             session
+             .run('MATCH(n:Register{emailid:{emailidParam}})RETURN n',{emailidParam:emailid})
+             .then(function(result){
+                 result.records.forEach(function(rec){
+ 
+                     console.log(rec._fields[0].properties);
+ 
+                     var a=rec._fields[0].properties;
+ 
+                   /* if(a.password==password){
+ 
+                         console.log("correct")
+ 
+                        //res.render('adminview');
+                     }
+                     else{
+                         console.log("failed")
+                     res.end("failed ")
+                     }*/
+
+                
+                 if(a.emailid==emailid)
+                 {
+                         console.log("Email id is correct")
+                 }
+                 else{
+                        console.log("Failed Emailid try again")   
+                 }
+                 
+                 if(a.status=="1"){
+                        console.log("status is correct")    
+                 }
+                 else
+                
+                 {
+                        console.log("status is failed tryagain")       
+        
+                 } 
+                 })
+              })
+             .catch(function(err)
+             
+             {
+                 console.log(err);
+            })
+           
+         });
          
-            app.post('/stdregadminview',function(req,res){
-            session
-            .run('MATCH(n:Register) RETURN n')
-            .then(function(result){
-            var view=[];
-            result.records.forEach(function(records){
-            view.push({
-            id:records._fields[0].identity.low,
-            name:records._fields[0].properties.name,
-            sex:records._fields[0].properties.sex,
-            address:records._fields[0].properties. address,
-            password:records._fields[0].properties.password
-            
-        })
-            //})
-           //res.render('view',{
-            //view1:view
-            })
-           })
-            .catch(function(err){
-            console.log(err)
-            })
-            });*/
+              app.listen(4000)
+                console.log('welcome')
+                module.exports=app;
+        
+ 
+ 
+    
+               
+ 
 
-
-           /*  app.get('/log',function(req,res){
-                res.render('login');
-                });
-               app.post('/log',function (req, res) {
-                var username=req.body.username;
-                var password=req.body.password;
-                session
-                .run('MATCH (n:Register {username: {usernameParam}}) RETURN n' ,{usernameParam: username})
-                .then(function(result){
-                result.records.forEach(function(records){
-                console.log(records._fields[0].properties);
-                var a=records._fields[0].properties;
-                if(a.password==password){
-                console.log("correct")
-                res.end("welcome")
-                }
-                else{
-                console.log("failed")
-                res.end("failed ")
-                }
-    
-                });
-    
-               })
-              
-                .catch(function(err)
-                {
-                console.log(err);
-               });
-    
-                });*/
-                  app.listen(4000)
-               console.log('welcome')
-               module.exports=app;
+        
