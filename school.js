@@ -5,7 +5,7 @@ var bodyParser=require('body-parser');
 var neo4j=require('neo4j-driver');
 
 var app=express();
-app.set('views',path.join(__dirname,'views'));
+app.set('views',path.join(__dirname,'views/school'));
 app.set('view engine','ejs');
 
 app.use(logger('dev'));
@@ -20,17 +20,18 @@ var session=driver.session();
 //Registration
 app.get('/school-reg',function(req,res){
     
-    res.render('school/schoolReg');
+    res.render('schoolReg');
  });
 
  //school login
  app.get('/',function(req,res){
     
-    res.render('school/schoolLog');
+    res.render('schoolLog');
  });
 
  //post for reg
  app.post('/school/reg',function(req,res){
+     
     var name=req.body.name;
     var address=req.body.address;
     var place=req.body.place;
@@ -39,7 +40,7 @@ app.get('/school-reg',function(req,res){
     var password=req.body.password;
     //console.log(name);
     session
-    .run('MATCH(p:school) MERGE (n:school {name:{nameParam},address:{addressParam},place:{placeParam},phone:{phoneParam}, email:{emailParam},password:{passwordParam}}) RETURN p',{nameParam:name,addressParam:address,placeParam:place,phoneParam:phone, emailParam:email, passwordParam:password})
+    .run('MATCH(p:school) MERGE (n:school {name:{nameParam},address:{addressParam},place:{placeParam},phone:{phoneParam}, email:{emailParam},password:{passwordParam},status:"0"}) RETURN p',{nameParam:name,addressParam:address,placeParam:place,phoneParam:phone, emailParam:email, passwordParam:password})
     .then(function(result){
         var check;
         
@@ -56,12 +57,12 @@ app.get('/school-reg',function(req,res){
     if(check==1)
     {
         console.log('Already registered');
-        res.render('school/schoolLog');
+        res.render('schoolLog');
       
     }
     else{
         console.log('Successfully Registered');
-        res.render('school/schoolLog');
+        res.render('schoolLog');
     }
     
       // session.close();
@@ -85,17 +86,27 @@ app.post('/school/login',function(req,res){
          //var dbUser = _.get(results.records[0].get('user'), 'properties');
          results.records.forEach(function(record){
              var db=record._fields[0].properties;
+            if(db.status=="1"){
              if(db.email==email){
                  console.log('correct');
-                 res.render('school/schoolHome',{
+                 res.render('schoolHome',{
                      users:record._fields[0].properties.name
                  });
              }
-            
+             
              else{
                 console.log('incorrect');
                 res.send('incorrect username or password');
              }
+            }
+            else
+            {
+                res.send('Under validation');
+                console.log('under validation');
+            }
+           
+             
+             console.log(db);
          });
         
  })

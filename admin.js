@@ -18,7 +18,10 @@ app.get('/admin',function(req,res)
 {
     res.render('adminPage');
 });
-
+app.get('/approve',function(req,res)
+{
+    res.render('adminLog');
+})
 
 app.post('/action', function(req,res)
 {
@@ -42,6 +45,7 @@ app.post('/action', function(req,res)
             }
         });
        
+       
     })
    
     .catch(function(err)
@@ -50,7 +54,7 @@ app.post('/action', function(req,res)
     });
 
 });
-
+//view school name
 app.post('/view',function(req,res)
 {
     session
@@ -76,9 +80,26 @@ app.post('/view',function(req,res)
         console.log(err);
     })
     //res.render('adminLog');
+}) 
+
+app.post('/approve',function(req,res)
+{
+    var Name = req.body.name;
+    session
+    .run('MATCH(n:school {name:{nameParam}}) SET n.status="1"',{nameParam:Name})
+    .then(function(result)
+    {
+        result.records.forEach(function(record)
+        {
+            console.log(record._fields[0].properties.status)
+        })
+       console.log('add');
+    })
+    .catch(function(err)
+    {
+        console.log(err);
+    })
 })
-
-
 
 app.listen(3000);
 console.log('server port number 3000');
