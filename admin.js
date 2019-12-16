@@ -85,20 +85,44 @@ app.post('/view',function(req,res)
 app.post('/approve',function(req,res)
 {
     var Name = req.body.name;
-    session
-    .run('MATCH(n:school {name:{nameParam}}) SET n.status="1"',{nameParam:Name})
-    .then(function(result)
+    var nameSel = req.body.name1;
+    if(nameSel == 'Approve')
     {
-        result.records.forEach(function(record)
+        session
+        .run('MATCH(n:school {name:{nameParam}}) SET n.status="1"',{nameParam:Name})
+        .then(function(result)
         {
-            console.log(record._fields[0].properties.status)
+            result.records.forEach(function(record)
+            {
+                console.log(record._fields[0].properties.status)
+            })
+           console.log('add');
+           res.send('Approve');
         })
-       console.log('add');
-    })
-    .catch(function(err)
+        .catch(function(err)
+        {
+            console.log(err);
+        })
+    }
+    else
     {
-        console.log(err);
-    })
+        session
+        .run('MATCH(n:school {name:{nameParam}}) SET n.status="0"',{nameParam:Name})
+        .then(function(result)
+        {
+            result.records.forEach(function(record)
+            {
+                console.log(record._fields[0].properties.status)
+            })
+           console.log('rej');
+           res.send('Reject');
+        })
+        .catch(function(err)
+        {
+            console.log(err);
+        })
+    }
+   
 })
 
 app.listen(3000);
