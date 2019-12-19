@@ -18,10 +18,7 @@ app.get('/admin',function(req,res)
 {
     res.render('adminPage');
 });
-app.get('/approve',function(req,res)
-{
-    res.render('adminLog');
-})
+
 
 app.post('/action', function(req,res)
 {
@@ -55,7 +52,7 @@ app.post('/action', function(req,res)
 
 });
 //view school name
-app.post('/view',function(req,res)
+app.post('/display',function(req,res)
 {
     session
     .run('MATCH(n:school) RETURN n')
@@ -66,7 +63,9 @@ app.post('/view',function(req,res)
         {
             console.log(record._fields[0].properties.name);
             schoolArr.push({
-                name:record._fields[0].properties.name
+                name:record._fields[0].properties.name,
+                place:record._fields[0].properties.place,
+                id:record._fields[0].identity.low
                 
             });
 
@@ -79,50 +78,56 @@ app.post('/view',function(req,res)
     {
         console.log(err);
     })
-    //res.render('adminLog');
+   
 }) 
 
-app.post('/approve',function(req,res)
+
+
+app.post('/appro',function(req,res)
 {
-    var Name = req.body.name;
-    var nameSel = req.body.name1;
-    if(nameSel == 'Approve')
-    {
-        session
-        .run('MATCH(n:school {name:{nameParam}}) SET n.status="1"',{nameParam:Name})
+    var id = req.body.namee;
+    
+       session
+        .run('MATCH(n:school) WHERE id(n)='+id+' SET n.status="1"')
         .then(function(result)
         {
+           
             result.records.forEach(function(record)
             {
-                console.log(record._fields[0].properties.status)
+               
+               // console.log(record._fields[0].properties);
+              
             })
-           console.log('add');
-           res.send('Approve');
+            session
+            .run('MATCH(n:school {name:{nameParam}}',{nameParam})
+          
         })
         .catch(function(err)
         {
             console.log(err);
         })
-    }
-    else
-    {
-        session
-        .run('MATCH(n:school {name:{nameParam}}) SET n.status="0"',{nameParam:Name})
-        .then(function(result)
-        {
-            result.records.forEach(function(record)
-            {
-                console.log(record._fields[0].properties.status)
-            })
-           console.log('rej');
-           res.send('Reject');
-        })
-        .catch(function(err)
-        {
-            console.log(err);
-        })
-    }
    
+   
+})
+app.post('/reje',function(req,res)
+{
+    var id = req.body.namee;
+    session
+    .run('MATCH(n:school) WHERE id(n)='+id+' SET n.status="0"')
+    .then(function(result)
+    {
+        result.records.forEach(function(record)
+        {
+        
+            res.send('reject');
+        
+        })
+      
+    })
+    .catch(function(err)
+    {
+        console.log(err);
+    })
 })
 
 app.listen(3000);

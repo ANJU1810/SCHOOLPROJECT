@@ -1,4 +1,44 @@
-<form action="/approve" method="POST">
+<center>
+
+
+    <h2>WELCOME</h2>
+   
+    <table border="1">  <tr><th>School Name</th><th>Place</th></tr>
+         <% arr.forEach(function(school){ %>
+       
+        <tr><td> <%= school.name %><input type="hidden" name="names" value=" <%= school %>"></td>
+            <td><%= school.place %></td>
+            <td>
+                <form action="/appro" method="POST">
+                    <input type="hidden" name="namee" value=" <%= school.id %>">
+                    <input type="submit" value="Approve" name="name1">
+                </form>
+            <td>
+                <form action="/reje" method="POST">
+                    <input type="hidden" name="namee" value=" <%= school.id %>">
+                    <input type="submit" value="Reject" name="name1">
+                </form>
+            </td>
+        </tr>
+            <% }) %>
+    </table>
+      
+
+    <h2>Approved School</h2>
+    <table border="1">
+       
+        <tr><th>School Name</th><th>Place</th></tr>
+        
+            
+        
+    </table>
+
+
+</center>
+
+
+
+<!--<form action="/approve" method="POST">
 <center>
     <h2>WELCOME</h2>
    
@@ -14,4 +54,4 @@
 
         <input type="submit" value="Reject" name="name1">
     </form>
-</center>
+</center>-->
